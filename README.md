@@ -30,4 +30,4 @@ sudo ufw allow 443
 ~~~
 * Firewall aktivieren: ```sudo ufw show && sudo ufw enable && sudo ufw status```
 
-### TODO: Autostart & LDAP-Abgleich!
+### TODO: Autostart, Caddy & LDAP-Abgleich!
