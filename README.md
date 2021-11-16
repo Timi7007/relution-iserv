@@ -6,6 +6,28 @@ Hierfür werden aus [Sibank](https://haneke.de/sibank-schulverwaltungs-Software.
 Damit erhalten die Schüler einen Account mit umfangreichen Funktionen wie Emails, Cloud-Dateiablage, Videokonferenzen, Hausaufgaben etc. sowie zur Anmeldung an den schuleigenen Rechnern und dem WLAN.
 
 Als Mobile-Device-Management (MDM) bzw. Unified-Endpoint-Management für die schuleigenen iPads (Klassensätze, Lehrergeräte und für bedürftige Schüler) sowie eine vielzahl von Bring-Your-Own-Device (BYOD)-Geräten setzen wir allerdings nicht die IServ-eigene Verwaltung (wie bei Windows-PCs) ein sondern [Relution](https://relution.io/).   
-Dieses wird auf einem dedizierten Server betrieben, der mit Hilfe der in diesem Repository vorhandenen Konfigurationsdateien betrieben werden kann. **Insbesondere ist diese Konfiguration darauf ausgelegt die Nutzer und Gruppen aus dem IServ in Relution zu übernehmen um so eine Mehrarbeit bei der Datenpflege zu vermeiden.** Des Weiteren ist Relution in der Lage aus den in Relution vorhandenen Accounts mittels Apples SFTP-Upload automatisch managed bzw. "verwaltete" Apple-IDs zu generieren welche dann z.B. für Shared-iPads oder 200GB gratis Speicher in der iCloud pro Schüler genutzt werden können.
+Dieses wird auf einem dedizierten Server betrieben, der mit Hilfe der in diesem Repository vorhandenen Konfigurationsdateien betrieben werden kann. **Insbesondere ist diese Konfiguration darauf ausgelegt die Nutzer und Gruppen aus dem IServ in Relution zu übernehmen um so eine Mehrarbeit bei der Datenpflege zu vermeiden.**    
+Des Weiteren ist Relution in der Lage aus den in Relution vorhandenen Accounts mittels Apples SFTP-Upload automatisch managed bzw. "verwaltete" Apple-IDs zu generieren welche dann z.B. für Shared-iPads oder 200GB gratis Speicher in der iCloud pro Schüler genutzt werden können.
 
-### Eine Schritt-für-Schritt-Anleitung der Relution-Installation sowie dem LDAP-Abgleich folgt bei Zeiten.
+## Installation des Relution-Systems via Docker Compose auf einem Ubuntu Server 20.04 Host
+* [Docker installieren.](https://docs.docker.com/engine/install/ubuntu/)
+* [Docker Compose installieren.](https://docs.docker.com/compose/install/)
+* ```sudo docker network create nat```
+* Den Inhalt des "opt"-Ordners aus dem Repo nach ```/opt``` auf Host kopieren.
+* Die Variablen in allen Konfig-Dateien anpassen. [TODO: Variablen klar kennzeichnen!]
+* Relution starten: ```sudo ./relution-start.sh```.
+
+Weitere Infos in der [offiziellen Relution-Dokumentation](https://repo.relution.io/docs/latest/relution-installguide/docker_installation/Docker_Compose_Linux.html).
+
+## Firewall einstellen
+* UFW installieren: ```sudo apt update && sudo apt install ufw -y```.
+* Alles verbieten: ```sudo ufw default deny```
+* Ausnahmen für tatsächlich genutzte Ports hinzufügen:
+~~~
+sudo ufw allow 22
+sudo ufw allow 80
+sudo ufw allow 443
+~~~
+* Firewall aktivieren: ```sudo ufw show && sudo ufw enable && sudo ufw status```
+
+### TODO: Autostart & LDAP-Abgleich!
