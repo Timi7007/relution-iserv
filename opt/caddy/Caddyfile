@@ -1,0 +1,3 @@
+relution.test {
+  reverse_proxy relution-docker:8080
+}

@@ -1,0 +1,81 @@
+version: '2.3'
+
+services:
+  mariadb:
+    image: mariadb:latest
+    restart: always
+    container_name: docker_mariadb
+    networks:
+      relution-network:
+        aliases:
+          - mariadb-docker
+    environment:
+      - TZ=Europe/Berlin
+      - MYSQL_DATABASE=relution
+      - MYSQL_ROOT_PASSWORD=%MYSQL_ROOT_PASSWORD%
+      - MYSQL_USER=relution
+      - MYSQL_PASSWORD=%MYSQL_PASSWORD%
+    expose:
+      - '3306'
+    volumes:
+      - 'mariadb:/var/lib/mysql'
+      - '/opt/relution/relution.cnf:/etc/mysql/conf.d/relution.cnf'
+
+  relution:
+    image: relution/relution:latest
+    restart: always
+    container_name: docker_relution
+    networks:
+      relution-network:
+        aliases:
+          - relution-docker
+    depends_on:
+      - mariadb
+    links:
+      - mariadb
+    environment:
+      - TZ=Europe/Berlin
+      - DATABASE_TYPE=mysql
+      - DATABASE_URL=jdbc:mariadb://mariadb-docker/relution?useServerPrepStmts=true
+      - DATABASE_USER=relution
+      - DATABASE_PWD=%MYSQL_PASSWORD%
+      - SMTP_HOST=%SMTP_HOSTNAME%
+      - SMTP_PORT=587
+      - SMTP_USERNAME=relution@server.test
+      - SMTP_PASSWORD=PASSWORD
+      - RELUTION_SERVER_EXTERNALURL=https://relution.test
+      - RELUTION_SYSTEM_ADMIN_PASSWORD=%SYSTEM_ADMIN_PASSWORD%
+      - RELUTION_SYSTEM_ADMIN_EMAIL=admin@company.test
+    expose:
+      - '8080'
+      - '8099'
+    volumes:
+     - '/opt/relution/application.yml:/opt/relution/application.yml'
+
+  caddy:
+    image: caddy:latest
+    restart: always
+    container_name: docker_caddy
+    networks:
+      relution-network:
+        aliases:
+          - caddy-docker
+    depends_on:
+      - relution
+    links:
+      - relution
+    ports:
+     - "80:80"
+     - "443:443"
+    volumes:
+     - '/opt/caddy/Caddyfile:/etc/caddy/Caddyfile:ro'
+     - '/opt/caddy/data:/data'
+     - '/opt/caddy/config:/config'
+
+volumes:
+  mariadb:
+
+networks:
+  relution-network:
+    external: true
+    name: nat
