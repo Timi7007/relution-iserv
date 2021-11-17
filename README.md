@@ -31,9 +31,9 @@ sudo ufw allow 443
 ~~~
 * Firewall aktivieren: ```sudo ufw show && sudo ufw enable && sudo ufw status```
 
-## Autostart (optional)
+## Autostart & -update (optional)
 * ```sudo crontab -e```
-* Mittels des gewählten Editors folgende Einträge optional anlegen:
+* Mittels des gewählten Editors folgende Einträge anlegen:
   * ```@reboot /pfad/zu/relution-start.sh``` startet Relution beim Hochfahren des Hosts.
   * ```0 2 * * * /pfad/zu/relution-stop.sh && /pfad/zu/relution-start.sh >/dev/null 2>&1``` startet Relution jeden Morgen um 02:00 Uhr neu. Hierdurch werden auch Updates gemacht.
     * Automatische Updates lassen sich durch das Anpassen der ```relution-start.sh``` deaktivieren. Für Testserver mögen diese sinnvoll sein, im Produktivbetrieb jeden nicht unbedingt.
