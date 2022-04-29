@@ -44,7 +44,7 @@ iconf save /etc/iserv/ldapusers
 iservchk ldap ferm
 iservchk
 
-if grep -q RelutionHostIP /var/log/slapd.log; then
+if grep -q $RelutionHostIP /var/log/slapd.log; then
     echo Sync klappt
 else
     echo "Sync kaputt!" | mail -s"LDAP Sync" root@$HOSTNAME
