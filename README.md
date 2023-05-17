@@ -5,7 +5,7 @@ Wir, als kommunaler Schulträger, verwenden für unsere Schulen [IServ](https://
 Hierfür werden aus [Sibank](https://haneke.de/sibank-schulverwaltungs-Software.html) Tabellen der Schülernamen mit Klassenzuordnung exportiert und per Import im IServ die Schüler angelegt bzw. die Klassenzugehörigkeit einsortiert.  
 Damit erhalten die Schüler einen Account mit umfangreichen Funktionen wie Emails, Cloud-Dateiablage, Videokonferenzen, Hausaufgaben etc. sowie zur Anmeldung an den schuleigenen Rechnern und dem WLAN.
 
-Als Mobile-Device-Management (MDM) bzw. Unified-Endpoint-Management für die schuleigenen iPads (Klassensätze, Lehrergeräte und für bedürftige Schüler) sowie eine vielzahl von Bring-Your-Own-Device (BYOD)-Geräten setzen wir allerdings nicht die IServ-eigene Verwaltung (wie bei Windows-PCs) ein sondern [Relution](https://relution.io/).   
+Als Mobile-Device-Management (MDM) bzw. Unified-Endpoint-Management für die schuleigenen iPads (Klassensätze, Lehrergeräte und für bedürftige Schüler) sowie eine vielzahl von Bring-Your-Own-Device (BYOD)-Geräten setzen wir allerdings nicht die IServ-eigene Verwaltung (wie bei Windows-PCs) ein, sondern [Relution](https://relution.io/).   
 Dieses wird auf einem dedizierten Server betrieben, der mit Hilfe der in diesem Repository vorhandenen Konfigurationsdateien betrieben werden kann. **Insbesondere ist diese Konfiguration darauf ausgelegt die Nutzer und Gruppen aus dem IServ in Relution zu übernehmen um so eine Mehrarbeit bei der Datenpflege zu vermeiden.**    
 Des Weiteren ist Relution in der Lage aus den in Relution vorhandenen Accounts mittels Apples SFTP-Upload automatisch managed bzw. "verwaltete" Apple-IDs zu generieren welche dann z.B. für Shared-iPads oder 200GB gratis Speicher in der iCloud pro Schüler genutzt werden können.
 
@@ -38,4 +38,17 @@ sudo ufw allow 443
   * ```0 2 * * * /pfad/zu/relution-stop.sh && /pfad/zu/relution-start.sh >/dev/null 2>&1``` startet Relution jeden Morgen um 02:00 Uhr neu. Hierdurch werden auch Updates gemacht.
     * Automatische Updates lassen sich durch das Anpassen der ```relution-start.sh``` deaktivieren. Für Testserver mögen diese sinnvoll sein, im Produktivbetrieb jedoch nicht unbedingt.
 
-### TODO: LDAP-Abgleich!
+### LDAP-Abgleich!
+*Hier ist noch einiges an Dokumentation nachzuholen.*
+* Auf dem IServ muss ein Nutzer mit dem Benutzernamen ```ldap.relution``` erstellt werden, dazu einfach ```ldap``` als Vornamen nehmen, ```relution``` als Nachnamen. Der Nutzer benötigt ein permanentes Passwort, welches z.B. durch eine einmalige Anmeldung erstellt werden kann. Dieses sollte als System-Passwort entsprechend sicher gewählt sein.
+* Dieses Kennwort muss in der ```/opt/relution/application.yml``` unter ```_ldap_password:``` auf dem Docker-Host hinterlegt werden.
+* Die Datei ```set-ldap-peers.sh``` wird auf dem IServ platziert und in Zeile 2 statt ```relution.test``` die tatsächliche Adresse (FQDN) des Relution-Servers hinterlegt.
+* Auf dem IServ muss nun ein Cronjob angelegt werden welcher das Script regelmäßig ausführt:
+  * ```sudo crontab -e```
+  * ```3 * * * * /pfad/zu/set-ldap-peers.sh >/dev/null 2>&1``` führt das Script immer 3 Minuten nach jeder vollen Stunde als root (Administrator) aus.
+
+Nun sollte der IServ-Server einmal die Stunde die IP-Adresse des Relution-Servers ermitteln und ihr durch den Nutzer ```ldap.relution```, mit dem vergebenen Passwort, Rechte auf die gesamte Nutzerdatenbank geben. Dies nutzt Relution dann um die Daten abzurufen und in die eigene Datenbank aufzunehmen. Das Script prüft wiederrum ob sich in der Log-Datei des LDAP-Servers die IP des Relution-Servers findet und informiert den Administrator per E-Mail wenn es keinen Zugriff durch Relution gab, was auf ein Syncronisationsproblem hindeutet.
+
+Ein manueller Abgleich der Datenbanken (Syncronisation) lässt sich im Relution Webinterface anstoßen:
+
+[TODO] Screenshot
