@@ -9,9 +9,8 @@ Als Mobile-Device-Management (MDM) bzw. Unified-Endpoint-Management für die sch
 Dieses wird auf einem dedizierten Server betrieben, der mit Hilfe der in diesem Repository vorhandenen Konfigurationsdateien betrieben werden kann. **Insbesondere ist diese Konfiguration darauf ausgelegt die Nutzer und Gruppen aus dem IServ in Relution zu übernehmen um so eine Mehrarbeit bei der Datenpflege zu vermeiden.**    
 Des Weiteren ist Relution in der Lage aus den in Relution vorhandenen Accounts mittels Apples SFTP-Upload automatisch managed bzw. "verwaltete" Apple-IDs zu generieren welche dann z.B. für Shared-iPads oder 200GB gratis Speicher in der iCloud pro Schüler genutzt werden können.
 
-## Installation des Relution-Systems via Docker Compose auf einem Ubuntu Server 20.04 Host
-* [Docker installieren.](https://docs.docker.com/engine/install/ubuntu/)
-* [Docker Compose installieren.](https://docs.docker.com/compose/install/)
+## Installation des Relution-Systems via Docker Compose auf einem Ubuntu Server 22.04 LTS Host
+* [Docker & Docker Compose installieren.](https://docs.docker.com/engine/install/ubuntu/)
 * ```sudo docker network create nat```
 * Den Inhalt des "opt"-Ordners aus dem Repo nach ```/opt``` auf Host kopieren.
 * Die Variablen in allen Konfig-Dateien anpassen. [TODO: Variablen klar kennzeichnen!]
