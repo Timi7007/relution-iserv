@@ -15,6 +15,7 @@ Des Weiteren ist Relution in der Lage aus den in Relution vorhandenen Accounts m
 * Den Inhalt des "opt"-Ordners aus dem Repo nach ```/opt``` auf Host kopieren.
 * Die Variablen in allen Konfig-Dateien anpassen. [TODO: Variablen klar kennzeichnen!]
   * Die Konfig-Dateien basieren auf den [offiziellen Vorlagen von Relution](https://github.com/relution-io/relution-setup/tree/master/docker/Linux/opt/relution), es wird jedoch [Caddy](https://caddyserver.com/) statt Nginx als Reverse-Proxy genutzt, um Konfigurationsaufwand (insbesondere im Bezug auf TLS-Zertifikate für HTTPS) zu vermeiden. Es wird automatisch ein [Let’s Encrypt](https://letsencrypt.org/)-Zertifikat erstellt.
+* Start- und Stop-Scripte ausführbar machen: ```chmod +x relution-st*```
 * Relution starten: ```sudo ./relution-start.sh```.
 
 Weitere Infos in der [offiziellen Relution-Dokumentation](https://repo.relution.io/docs/latest/relution-installguide/docker_installation/Docker_Compose_Linux.html).
