@@ -40,12 +40,9 @@ services:
       - DATABASE_USER=relution
       - DATABASE_PWD=%MYSQL_PASSWORD%
       - SMTP_HOST=%SMTP_HOSTNAME%
-      - SMTP_PORT=587
-      - SMTP_USERNAME=relution@server.test
-      - SMTP_PASSWORD=PASSWORD
-      - RELUTION_SERVER_EXTERNALURL=https://relution.test
+      - RELUTION_SERVER_EXTERNALURL=%EXT_HOSTNAME_URL eg https://relution.test%
       - RELUTION_SYSTEM_ADMIN_PASSWORD=%SYSTEM_ADMIN_PASSWORD%
-      - RELUTION_SYSTEM_ADMIN_EMAIL=admin@company.test
+      - RELUTION_SYSTEM_ADMIN_EMAIL=%SYSTEM_ADMIN_EMAIL%
     expose:
       - '8080'
       - '8099'
