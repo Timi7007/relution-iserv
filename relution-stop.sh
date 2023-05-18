@@ -1,2 +1,2 @@
 #!/bin/bash
-cd '/opt/relution'; docker-compose down
+cd '/opt/relution'; docker compose down
