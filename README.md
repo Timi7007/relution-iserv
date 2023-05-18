@@ -49,7 +49,6 @@ sudo ufw allow 443
     * Automatische Updates lassen sich durch das Anpassen der ```relution-start.sh``` deaktivieren. Für Testserver mögen diese sinnvoll sein, im Produktivbetrieb jedoch nicht unbedingt.
 
 ### LDAP-Abgleich!
-*Hier ist noch einiges an Dokumentation nachzuholen.*
 * Auf dem IServ muss ein Nutzer mit dem Benutzernamen ```ldap.relution``` erstellt werden, dazu einfach ```ldap``` als Vornamen nehmen, ```relution``` als Nachnamen. Der Nutzer benötigt ein permanentes Passwort, welches z.B. durch eine einmalige Anmeldung erstellt werden kann. Dieses sollte als System-Passwort entsprechend sicher gewählt sein.
 * Dieses Kennwort muss in der ```/opt/relution/application.yml``` unter ```_ldap_password:``` auf dem Docker-Host hinterlegt werden.
 * Die Datei ```set-ldap-peers.sh``` wird auf dem IServ platziert und in Zeile 2 statt ```relution.test``` die tatsächliche Adresse (FQDN) des Relution-Servers hinterlegt.
