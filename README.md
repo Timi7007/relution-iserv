@@ -13,8 +13,18 @@ Des Weiteren ist Relution in der Lage aus den in Relution vorhandenen Accounts m
 * [Docker & Docker Compose installieren.](https://docs.docker.com/engine/install/ubuntu/)
 * ```sudo docker network create nat```
 * Den Inhalt des "opt"-Ordners aus dem Repo nach ```/opt``` auf Host kopieren.
-* Die Variablen in allen Konfig-Dateien anpassen. [TODO: Variablen klar kennzeichnen!]
+* Die Variablen in den Konfig-Dateien anpassen:
   * Die Konfig-Dateien basieren auf den [offiziellen Vorlagen von Relution](https://github.com/relution-io/relution-setup/tree/master/docker/Linux/opt/relution), es wird jedoch [Caddy](https://caddyserver.com/) statt Nginx als Reverse-Proxy genutzt, um Konfigurationsaufwand (insbesondere im Bezug auf TLS-Zertifikate für HTTPS) zu vermeiden. Es wird automatisch ein [Let’s Encrypt](https://letsencrypt.org/)-Zertifikat erstellt.
+  * Folgende Punkte müssen angepasst werden:
+    * In ```/opt/caddy/Caddyfile``` ```relution.test``` mit dem Hostname (FQDN) des Servers ersetzen. Ports 80 und 443 müssen extern erreichbar sein.
+    * In ```/opt/relution/docker-compose.yml``` ```MYSQL_ROOT_PASSWORD``` und ```MYSQL_PASSWORD``` anpassen, hier ruhig auf Nummer sicher gehen.
+    * In der ```/opt/relution/application.yml``` sind einige Änderungen vorzunehmen:
+      * Unter ```relution/system/admin``` ```password``` und ```email```.
+      * "relution/system/server/externalURL" der gleiche FQDN wie im ```Caddyfile```, dieses Mal allerdings mit Schema ```https://```.
+      * "relution/system/database/password" muss auf das in der ```docker-compose.yml``` festgelegte ```MYSQL_PASSWORD``` gesetzt werden.
+      * Unter ```relution/system/mail``` ```host```, ```port```, ```username``` und ```password```.
+      * Unter ```relution/system/smtp``` nach Bedarf/Anforderungen des Mailservers.
+      * [TODO]: LDAP-Einstellungen weiter unten in der ```application.yml``` erklären.
 * Start- und Stop-Scripte ausführbar machen: ```chmod +x relution-st*```
 * Relution starten: ```sudo ./relution-start.sh```.
 
